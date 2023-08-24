@@ -28,6 +28,7 @@ class MerchSaleFactory extends Factory
             'price' => fake()->randomFloat(2, 1, 100),
             'read' => 0,
             'user_id' => 1,
+            'follower_id' => fake()->numberBetween(1, 300),
             'created_at' => fake()->dateTimeBetween('-3 month', 'now')
         ];
     }

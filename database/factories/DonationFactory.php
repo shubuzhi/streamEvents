@@ -28,6 +28,7 @@ class DonationFactory extends Factory
             'donation_message' => fake()->randomElement(['Thank you for being awesome', 'Like you', 'You are the best']),
             'read' => 0,
             'user_id' => 1,
+            'follower_id' => fake()->numberBetween(1, 300),
             'created_at' => fake()->dateTimeBetween('-3 month', 'now')
         ];
     }
