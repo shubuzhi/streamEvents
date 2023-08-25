@@ -22,7 +22,7 @@ class DashboardController extends Controller
             ->select([DB::raw("CONCAT(name, ' (Tier', subscription_tier, ') subscribed to you!') as name"), 'read', 'created_at', DB::raw("'subscriber' as source")])
             ->where('user_id', $request->user()->id);
         $donations = Donation::query()
-            ->select([DB::raw("CONCAT(followers.name, ' donated ', donations.amount, ' ', donations.currency, ' to you!') as name"), 'donations.read as read', 'donations.created_at as created_at', DB::raw("'donation' as source")])
+            ->select([DB::raw("CONCAT(followers.name, ' donated ', donations.amount, ' ', donations.currency, ' to you! ', '<br>', donations.donation_message) as name"), 'donations.read as read', 'donations.created_at as created_at', DB::raw("'donation' as source")])
             ->join('followers', 'donations.follower_id', '=', 'followers.id')
             ->where('donations.user_id', $request->user()->id);
         $merchSales = MerchSale::query()
