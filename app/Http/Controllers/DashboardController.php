@@ -38,7 +38,7 @@ class DashboardController extends Controller
                 ->select(['merch_sales.id as id', DB::raw("CONCAT(followers.name, ' bought ', merch_sales.item_name, ' from you for ', merch_sales.amount * merch_sales.price, ' CAD!') as name"), 'merch_sales.read as read', 'merch_sales.created_at as created_at', DB::raw("'merch_sale' as source")])
                 ->join('followers', 'merch_sales.follower_id', '=', 'followers.id')
                 ->where('merch_sales.user_id', $request->user()->id);
-
+            
             $list = $followers
                 ->unionAll($subscribers)
                 ->unionAll($donations)
@@ -93,7 +93,7 @@ class DashboardController extends Controller
 
             return view('dashboard', ['data' => $data]);
         } catch (\Exception $e) {
-            return view('login');
+            return view('login'); //here should return error page normally
         }
     }
 
