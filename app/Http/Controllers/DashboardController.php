@@ -10,11 +10,17 @@ use App\Models\Subscriber;
 use Carbon\Carbon;
 use http\Env\Response;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
+     */
     public function index(Request $request)
     {
         try {
@@ -38,8 +44,7 @@ class DashboardController extends Controller
                 ->unionAll($donations)
                 ->unionAll($merchSales)
                 ->orderBy('created_at', 'desc')
-                ->limit(100)
-                ->get()
+                ->paginate(100)
                 ->toArray();
 
             $donationTotal = Donation::query()->where('created_at', '>=', Carbon::now()->subDays(30))
@@ -82,18 +87,21 @@ class DashboardController extends Controller
                 'topThree'     => $topThreeItems
             ];
 
+            if ($request->ajax()) {
+                return view('pagination', ['list' => $list]);
+            }
+
             return view('dashboard', ['data' => $data]);
         } catch (\Exception $e) {
             return view('login');
         }
     }
 
-    public function loadMore(DashboardRequest $request)
-    {
-
-    }
-
-    public function updateReadStatus(DashboardUpdateReadStatusRequest $request)
+    /**
+     * @param DashboardUpdateReadStatusRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateReadStatus(DashboardUpdateReadStatusRequest $request): JsonResponse
     {
         try {
             DB::beginTransaction();
