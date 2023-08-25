@@ -9,6 +9,7 @@ use App\Models\Subscriber;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
@@ -38,6 +39,46 @@ class DashboardController extends Controller
             ->get()
             ->toArray();
 
-        return view('dashboard');
+        $donationTotal = Donation::query()->where('created_at', '>=', Carbon::now()->subDays(30))
+            ->where('user_id', $request->user()->id)
+            ->sum('amount');
+        $subscriptionTotal = Subscriber::query()->where('created_at', '>=', Carbon::now()->subDays(30))
+            ->where('user_id', $request->user()->id)
+            ->sum(DB::raw(("CASE
+                WHEN subscription_tier = 1 THEN 5
+                WHEN subscription_tier = 2 THEN 10
+                WHEN subscription_tier = 3 THEN 15
+                ELSE 0
+            END")));
+        $merchSaleTotal = MerchSale::query()->where('created_at', '>=', Carbon::now()->subDays(30))
+            ->where('user_id', $request->user()->id)
+            ->sum(DB::raw('amount * price'));
+
+        $totalRevenue = $donationTotal + $subscriptionTotal + $merchSaleTotal;
+
+        $followersGained = Follower::query()
+            ->where('created_at', '>=', Carbon::now()->subDays(30))
+            ->where('user_id', $request->user()->id)
+            ->count();
+
+        $topThreeItems = MerchSale::query()
+            ->select(['item_name', DB::raw("SUM(amount * price) as total_sales")])
+            ->where('user_id', $request->user()->id)
+            ->where('created_at', '>=', Carbon::now()->subDays(30))
+            ->groupBy('item_name')
+            ->orderByDesc('total_sales')
+            ->limit(3)
+            ->get()
+            ->toArray();
+
+        $data = [
+            'user_id'      => $request->user()->id,
+            'list'         => $list,
+            'totalRevenue' => $totalRevenue,
+            'followers'    => $followersGained,
+            'topThree'     => $topThreeItems
+        ];
+
+        return view('dashboard', ['data' => $data]);
     }
 }
