@@ -14,6 +14,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\DB;
+use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 
 class DashboardController extends Controller
 {
@@ -38,7 +39,7 @@ class DashboardController extends Controller
                 ->select(['merch_sales.id as id', DB::raw("CONCAT(followers.name, ' bought ', merch_sales.item_name, ' from you for ', merch_sales.amount * merch_sales.price, ' CAD!') as name"), 'merch_sales.read as read', 'merch_sales.created_at as created_at', DB::raw("'merch_sale' as source")])
                 ->join('followers', 'merch_sales.follower_id', '=', 'followers.id')
                 ->where('merch_sales.user_id', $request->user()->id);
-            
+
             $list = $followers
                 ->unionAll($subscribers)
                 ->unionAll($donations)
@@ -92,6 +93,24 @@ class DashboardController extends Controller
             }
 
             return view('dashboard', ['data' => $data]);
+
+            //Ideally this function should be pure get api function and return following,
+            //for this project I'm using above only to make front end simpler
+
+//            $combinedQuery = $followers
+//                ->unionAll($subscribers)
+//                ->unionAll($donations)
+//                ->unionAll($merchSales)
+//                ->orderBy('created_at', 'desc');
+//
+//            $paginator  = $combinedQuery->paginate(100);
+//
+//            return fractal()
+//                ->collection($paginator->items())
+//                ->transformWith(new ListTransformer())
+//                ->paginateWith(new IlluminatePaginatorAdapter($paginator))
+//                ->toArray();
+
         } catch (\Exception $e) {
             return view('login'); //here should return error page normally
         }
