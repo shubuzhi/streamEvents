@@ -88,7 +88,7 @@
                 loading = true;
 
                 $.ajax({
-                    url: "/dashboard?page=" + page, // Replace with your actual route
+                    url: "/dashboard?page=" + page,
                     method: "GET",
                     success: function(response) {
                         $("#eventList").append(response);
