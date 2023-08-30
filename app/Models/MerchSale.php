@@ -30,4 +30,12 @@ class MerchSale extends Model
     {
         return $this->belongsTo('User', 'user_id', 'id');
     }
+
+    /**
+     * @return BelongsTo
+     */
+    public function follower(): BelongsTo
+    {
+        return $this->belongsTo('Follower', 'follower_id', 'id');
+    }
 }
