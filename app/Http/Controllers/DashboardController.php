@@ -26,17 +26,17 @@ class DashboardController extends Controller
     {
         try {
             $followers = Follower::query()
-                ->select(['id', 'name', 'read', 'created_at', DB::raw("'follower' as source")])
+                ->select(['id', DB::raw("CONCAT(name, ' followed you!') as event"), 'read', 'created_at', DB::raw("'follower' as source")])
                 ->where('user_id', $request->user()->id);
             $subscribers = Subscriber::query()
-                ->select(['id', DB::raw("CONCAT(name, ' (Tier', subscription_tier, ') subscribed to you!') as name"), 'read', 'created_at', DB::raw("'subscriber' as source")])
+                ->select(['id', DB::raw("CONCAT(name, ' (Tier', subscription_tier, ') subscribed to you!') as event"), 'read', 'created_at', DB::raw("'subscriber' as source")])
                 ->where('user_id', $request->user()->id);
             $donations = Donation::query()
-                ->select(['donations.id as id', DB::raw("CONCAT(followers.name, ' donated ', donations.amount, ' ', donations.currency, ' to you! ', '<br>', donations.donation_message) as name"), 'donations.read as read', 'donations.created_at as created_at', DB::raw("'donation' as source")])
+                ->select(['donations.id as id', DB::raw("CONCAT(followers.name, ' donated ', donations.amount, ' ', donations.currency, ' to you! ', '<br>', donations.donation_message) as event"), 'donations.read as read', 'donations.created_at as created_at', DB::raw("'donation' as source")])
                 ->join('followers', 'donations.follower_id', '=', 'followers.id')
                 ->where('donations.user_id', $request->user()->id);
             $merchSales = MerchSale::query()
-                ->select(['merch_sales.id as id', DB::raw("CONCAT(followers.name, ' bought ', merch_sales.item_name, ' from you for ', merch_sales.amount * merch_sales.price, ' CAD!') as name"), 'merch_sales.read as read', 'merch_sales.created_at as created_at', DB::raw("'merch_sale' as source")])
+                ->select(['merch_sales.id as id', DB::raw("CONCAT(followers.name, ' bought ', merch_sales.item_name, ' from you for ', merch_sales.amount * merch_sales.price, ' CAD!') as event"), 'merch_sales.read as read', 'merch_sales.created_at as created_at', DB::raw("'merch_sale' as source")])
                 ->join('followers', 'merch_sales.follower_id', '=', 'followers.id')
                 ->where('merch_sales.user_id', $request->user()->id);
 
