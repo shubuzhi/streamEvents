@@ -12,7 +12,6 @@
     $(document).ready(function() {
         $(".event-item").on("click", function() {
             let eventItem = $(this).data("event-info");
-            // let eventItem = JSON.parse(eventInfo);
             updateEventStatus(eventItem);
         });
 
