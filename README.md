@@ -1,66 +1,59 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+Streamlabs FullStack Assignment
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This is the fullstack assignment of streamlabs interview, the application is built on Laravel framework
 
-## About Laravel
+Application: Stream Events
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+You will build an application called “Stream Events”. This application is aimed at showing streamers a list of events that happened during their stream.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Registration:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Users should be able to create an account through your preferred oauth login system, this can be anything from Twitch, Youtube, Facebook, etc..
 
-## Learning Laravel
+Assignment Requirements:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Create the following tables:
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+followers (name)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+subscribers (name + subscription tier 1/2/3)
 
-## Laravel Sponsors
+donations (amount + currency + donation message)
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+merch_sales (item name + amount + price)
 
-### Premium Partners
+Seed each table with about 300-500 rows of data for each user with creation dates ranging from 3 months ago till now. 
+Each of these rows should be able to be marked as read / unread by the user.
+Aggregate the data from the above three tables.
+Show it to the user once they log in.
+Use a single list to display this information, format it as a sentence.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+RandomUser1 followed you!
 
-## Contributing
+RandomUser2 (Tier1) subscribed to you!
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+RandomUser3 donated 50 USD to you!
 
-## Code of Conduct
+“Thank you for being awesome”
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+RandomUser4 bought some fancy pants from you for 30 USD!
 
-## Security Vulnerabilities
+Only show the first 100 events.
+Load more as they scroll down.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Above the list show three squares with the following information.
+Total revenue they made in the past 30 days from Donations, Subscriptions & Merch sales.
 
-## License
+Subscriptions are Tier1: 5$ , Tier2: 10$, Tier3: 15$
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Total amount of followers they have gained in the past 30 days
+
+Top 3 items that did the best sales wise in the past 30 days
+
+Extra Notes:
+
+Please make use of best practices as if you were working on a large scale project
+
+Frontend
+
+Build a simple SPA (Single Page Application) using Javascript & CSS, this does not have to look pretty. The main focus of this assignment is the Backend implementation. Be sure to use REST API calls from the frontend side to call the backend.
