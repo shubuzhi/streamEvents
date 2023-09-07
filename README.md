@@ -1,4 +1,4 @@
-Streamlabs FullStack Assignment
+<h1>Streamlabs FullStack Assignment</h1>
 
 This is the fullstack assignment of streamlabs interview, the application is built on Laravel framework
 
